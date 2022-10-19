@@ -1,0 +1,22 @@
+{
+  "name": "new",
+  "version": "0.1.0",
+  "private": true,
+  "proxy":"http://127.0.0.1:3000",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "start-api": "cd api && py -m flask run"
+  },
+  "dependencies": {
+    "next": "12.3.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
+  "devDependencies": {
+    "eslint": "8.24.0",
+    "eslint-config-next": "12.3.1"
+  }
+}
