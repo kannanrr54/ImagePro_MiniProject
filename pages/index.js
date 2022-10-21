@@ -14,6 +14,7 @@ function app(props){
   const handleUploadImage=(ev)=> {
     ev.preventDefault();
     if(f != 0){
+      type=document.getElementById("type").value
       data.append('type',document.getElementById("type").value)
       fetch('/upload', {
         method: 'POST',
@@ -42,10 +43,6 @@ function app(props){
         });
       });  
   }
-  const meta=(ev)=>{
-    //call get api to get meta data
-    
-  }
   return(
     <>
     <div>
@@ -61,7 +58,6 @@ function app(props){
         </div>
       </form>
       <button onClick={getImg}>Download</button>
-      <button onClick={meta}>Download</button>
       </div>
       <img id="img" width={100} height={100}  />
       </>

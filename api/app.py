@@ -21,7 +21,7 @@ def fileUpload():
     type = request.form['type']
     print(type)
     img=Image.open(file)
-    # filename = file.filename
+    filename = file.filename
     destination="/".join([target, "test."+type])
     img.save(destination)
     return  {}
@@ -29,11 +29,3 @@ def fileUpload():
 @app.route('/getimage')
 def getimage():
     return {"image":str({type})}
-
-#api to return meta data
-@app.route('/')
-def getimage():
-    #get image from public folder and wite logic to get meta data.
-    #extract each metadata values like - date,exposure,time.
-
-    return {"key":"value","key":"value"}
