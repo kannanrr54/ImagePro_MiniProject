@@ -51,8 +51,8 @@ function app(props){
     <div>
         <form>
         <div>
-          <input type="file" onChange={getImage} /><br/><br/>
-          <select id="type">
+          <input type="file" onChange={getImage} required=""/><br/><br/>
+          <select id="type" required="">
             <option value="WEBP">WEBP</option>
             <option value="JPEG2">JPEG2</option>
             <option value="JPEGXR">JPEGXR</option>
