@@ -18,6 +18,8 @@ def fileUpload():
         os.mkdir(target) 
     file = request.files['file']
     type = request.form['type']
+    if(type=='JPEG2'):
+        type='j2k'
     fname=request.form['filename']
     img=Image.open(file)
     destination="/".join([target, fname+"."+type])

@@ -23,6 +23,9 @@ function app(props) {
       ev.preventDefault();
       if (f != 0) {
           var type=document.getElementById('type').value;
+          if(type=='JPEG2'){
+            type='j2k';
+          }
           data.append('type', document.getElementById("type").value)
           fetch('/upload', {
               method: 'POST',
@@ -32,8 +35,7 @@ function app(props) {
               response.text().then((body) => {});
               if(response.status == 200){
                 document.getElementById("img").setAttribute("src", filename+"."+type);
-                document.getElementById("img_title").innerHTML="CONVERTED IMAGE : "+filename;
-                
+                document.getElementById("img_title").innerHTML="CONVERTED IMAGE : "+filename+"."+type; 
               }
           });
           f = 0   
@@ -44,6 +46,9 @@ function app(props) {
       fetch('/getimage').then((response) => {
           response.json().then((body) => {
               var type=document.getElementById('type').value;
+              if(type=='JPEG2'){
+                type='j2k';
+              }
               var link = document.createElement('a');
               link.href = document.getElementById("img").getAttribute("src");
               link.download = filename +'.' + type;
@@ -90,7 +95,7 @@ function app(props) {
         <center>
             <button onClick={getImg} className="btn btn-primary" id='dld'>
                 DOWNLOAD
-            </button><br />
+            </button><br/>
         </center>
 
     </div>
