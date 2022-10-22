@@ -23,8 +23,8 @@ def fileUpload():
     fname=request.form['filename']
     img=Image.open(file)
     destination="/".join([target, fname+"."+type])
-    if os.path.isfile(destination):
-        os.remove(destination)
+    # if os.path.isfile(destination):
+    #     os.remove(destination)
     img.save(destination)
     return  {}
 

@@ -9,6 +9,8 @@ function app(props) {
   const f = 0
   const type = null
   const filename="",file=""
+  const download=0
+
   const getImage = (ev) => {
       f = 1;
       file=ev.target.files[0];
@@ -21,6 +23,7 @@ function app(props) {
   }
   const handleUploadImage = (ev) => {
       ev.preventDefault();
+      document.getElementById("img").setAttribute("src", 'loading.gif');
       if (f != 0) {
           var type=document.getElementById('type').value;
           if(type=='JPEG2'){
@@ -36,6 +39,8 @@ function app(props) {
               if(response.status == 200){
                 document.getElementById("img").setAttribute("src", filename+"."+type);
                 document.getElementById("img_title").innerHTML="CONVERTED IMAGE : "+filename+"."+type; 
+                // document.getElementById('dld').removeAttribute('disabled');
+                download=1
               }
           });
           f = 0   
@@ -43,7 +48,8 @@ function app(props) {
   }
   const getImg = (ev) => {
       ev.preventDefault();
-      fetch('/getimage').then((response) => {
+      if(download==1){
+        fetch('/getimage').then((response) => {
           response.json().then((body) => {
               var type=document.getElementById('type').value;
               if(type=='JPEG2'){
@@ -55,12 +61,14 @@ function app(props) {
               document.body.appendChild(link);
               link.click();
               document.body.removeChild(link);
+              // document.getElementById('dld').setAttribute('disabled');
           });
       });
+      }
+      download=0;
   }
   const meta = (ev) => {
       //call get api to get meta data
-
   }
   return(
     <>
@@ -68,6 +76,7 @@ function app(props) {
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+    <title>ImagePro</title>
     <div className='head1'>
         <p className='title'>ImagePro</p>
     </div>
@@ -80,11 +89,6 @@ function app(props) {
             or
             <input type="file" id="images" accept="image/*" onChange={getImage} />
         </label>
-        {/* <div className="custom-file">
-            <input type="file" className="custom-file-input" id="customFile" onChange={getImage} />
-            <label className="custom-file-label" for="customFile">Choose file</label>
-        </div> */}
-        {/* <input type="file" onChange={getImage} className='form_ele' /><br /><br /> */}
         <select id="type" className='dd'>
             <option value="">SELECT A TYPE TO CONVERT</option>
             <option value="WEBP">WEBP</option>
@@ -102,7 +106,7 @@ function app(props) {
     <div className='outer2'>
         <div id='img_title'>CONVERTED IMAGE :</div>
         <img id="img" className='img' /><br/><br/>
-        <div className='meta'>
+        <div className='meta'>Metadata
         <table>
           <tbody>
           <tr>

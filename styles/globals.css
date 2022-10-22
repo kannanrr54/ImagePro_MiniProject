@@ -148,6 +148,6 @@ input[type=file]::file-selector-button:hover {
 }
 
 tr,td{
-  padding: 20px;
+  padding: 18px;
   border: 1px solid black;
 }
