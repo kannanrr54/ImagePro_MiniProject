@@ -1,4 +1,4 @@
-import os
+import os,glob
 from tokenize import String
 from flask import Flask, request
 from PIL import Image
@@ -15,17 +15,22 @@ type=""
 def fileUpload():
     target=os.path.join(UPLOAD_FOLDER,path)
     if not os.path.isdir(target):
-        os.mkdir(target)
-    print("============================")
+        os.mkdir(target) 
     file = request.files['file']
     type = request.form['type']
-    print(type)
+    fname=request.form['filename']
     img=Image.open(file)
-    filename = file.filename
-    destination="/".join([target, "test."+type])
+    destination="/".join([target, fname+"."+type])
+    if os.path.isfile(destination):
+        os.remove(destination)
     img.save(destination)
     return  {}
 
 @app.route('/getimage')
 def getimage():
     return {"image":str({type})}
+
+# @app.route('/getMetadata')
+# def getimage():
+#write logic to get meta data
+#     return {}
