@@ -35,15 +35,35 @@ function app(props) {
               mode: 'no-cors',
               body: data,
           }).then((response) => {
-              response.text().then((body) => {});
+              response.json().then((body) => {
+              });
               if(response.status == 200){
+                fetch('/getMetadata', {
+                  method: 'POST',
+                  mode: 'no-cors',
+                  body: data,
+              }).then((response) => {
+                  response.json().then((body) => {
+                    var mData=JSON.parse(body.meta);
+                    console.log(mData.Model)
+                    const title = ["Make", "Model", "DateTimeOriginal","FocalLength","ISOSpeedRatings"];
+                    var table= document.getElementById("metaData");
+                    var metaDataRows=""
+                    title.forEach(element => {
+                      metaDataRows=metaDataRows+"<tr><td>"+element+"</td><td>"+mData[element]+"</td></tr>"
+                    });
+                    
+                    table.innerHTML=metaDataRows;
+                    
+                  });
+              });
                 document.getElementById("img").setAttribute("src", filename+"."+type);
                 document.getElementById("img_title").innerHTML="CONVERTED IMAGE : "+filename+"."+type; 
                 // document.getElementById('dld').removeAttribute('disabled');
                 download=1
               }
           });
-          f = 0   
+          f = 0             
       }
   }
   const getImg = (ev) => {
@@ -108,27 +128,7 @@ function app(props) {
         <img id="img" className='img' /><br/><br/>
         <div className='meta'>Metadata
         <table>
-          <tbody>
-          <tr>
-            <td>..</td>
-            <td>..</td>
-          </tr>
-          <tr>
-            <td>..</td>
-            <td>..</td>
-          </tr>
-          <tr>
-            <td>..</td>
-            <td>..</td>
-          </tr>
-          <tr>
-            <td>..</td>
-            <td>..</td>
-          </tr>
-          <tr>
-            <td>..</td>
-            <td>..</td>
-          </tr>
+          <tbody id="metaData">
           </tbody>
           
       </table>
