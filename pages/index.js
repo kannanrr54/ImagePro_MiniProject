@@ -25,6 +25,7 @@ function app(props) {
 
 	const handleUploadImage = (ev) => {
 		ev.preventDefault();
+		
 		document.getElementById("img").setAttribute("src", 'loading.gif');
 		if (link) {
 			url = document.getElementById('link').value;
@@ -41,7 +42,7 @@ function app(props) {
 		data.delete('filename', filename);
 		data.append('filename', filename);
 		
-		if (f != 0) {
+		if (f != 0 || document.getElementById('images').value) {
 			var type = document.getElementById('type').value;
 			if (type == 'JPEG2') {
 				type = 'j2k';
