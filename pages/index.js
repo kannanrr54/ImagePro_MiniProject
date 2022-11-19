@@ -5,8 +5,7 @@ import Script from 'next/script';
 check url is valid*/
 
 function app(props) {
-	const filename = "",file = "",url = "",download = 0,link = 0,type = null,f = 0,data = null
-let myscript=document.createElement('script');
+	let filename = "",file = "",url = "",download = 0,link = 0,type = null,f = 0,data = null
 
 	const getImageLink = (ev) => {
 		link = 1
