@@ -25,69 +25,72 @@ function app(props) {
 
 	const handleUploadImage = (ev) => {
 		ev.preventDefault();
-		
-		document.getElementById("img").setAttribute("src", 'loading.gif');
-		if (link) {
-			url = document.getElementById('link').value;
-			filename = url.split("/")[url.split("/").length - 1].split('.')[0	];
-			data.delete('url',url);
-			data.append('url',url);
-			console.log(filename)
-		} else {
-			filename = document.getElementById('images').value.split(/[.]/)[0].split('\\');
-			filename = filename[filename.length - 1]
-			data.delete('url',url);
-			data.append('url',"");
-		}
-		data.delete('filename', filename);
-		data.append('filename', filename);
-		
-		if (f != 0 || document.getElementById('images').value) {
-			var type = document.getElementById('type').value;
-			if (type == 'JPEG2') {
-				type = 'j2k';
-			} else if (type == 'JPEGXR') {
-				type = 'wdp';
+		var img=document.getElementById("images").value;
+		var link=document.getElementById("link").value;
+		if(img || link){
+			document.getElementById("img").setAttribute("src", 'loading.gif');
+			if (link) {
+				url = document.getElementById('link').value;
+				filename = url.split("/")[url.split("/").length - 1].split('.')[0	];
+				// data.delete('url',url);
+				data.append('url',url);
+			} else if(f){
+				filename = document.getElementById('images').value.split(/[.]/)[0].split('\\');
+				filename = filename[filename.length - 1]
+					// data.delete('url',url);
+					data.append('url',"");	
 			}
-			console.log(data)
-			data.append('type', type)
-			fetch('/upload', {
-				method: 'POST',
-				mode: 'no-cors',
-				body: data,
-			}).then((response) => {
-				
-				response.json().then((body) => {});
-				if (response.status == 200) {
-					fetch('/getMetadata', {
-						method: 'POST',
-						mode: 'no-cors',
-						body: data,
-					}).then((response) => {
-						response.json().then((body) => {
-							var mData = JSON.parse(body.meta);
-							const title = ["Make", "Model", "DateTimeOriginal", "FocalLength", "ISOSpeedRatings"];
-							var table = document.getElementById("metaData");
-							var metaDataRows = ""
-							title.forEach(element => {
-								metaDataRows = metaDataRows + "<tr><td>" + element + "</td><td>" + mData[element] + "</td></tr>"
-							});
-							table.innerHTML = metaDataRows;
-							console.log(metaDataRows);
-						});
-					});
-					// if(type=="j2k" || type=="wdp"){
-					// 	document.getElementById("img").setAttribute("src", "img-def.png");	
-					// }
-					// else{
-						document.getElementById("img").setAttribute("src", filename + "." + type);
-					// }
-					document.getElementById("img_title").innerHTML = "CONVERTED IMAGE : " + filename + "." + type;
-					download = 1
+			data.delete('filename', filename);
+			data.append('filename', filename);
+			console.log("------------"+document.getElementById('images').value)
+			if (f != 0 || document.getElementById('images').value) {
+				var type = document.getElementById('type').value;
+				if (type == 'JPEG2') {
+					type = 'j2k';
+				} else if (type == 'JPEGXR') {
+					type = 'wdp';
 				}
-			});
-			f = 0
+				console.log(data)
+				data.append('type', type)
+				fetch('/upload', {
+					method: 'POST',
+					mode: 'no-cors',
+					body: data,
+				}).then((response) => {
+					
+					response.json().then((body) => {});
+					if (response.status == 200) {
+						fetch('/getMetadata', {
+							method: 'POST',
+							mode: 'no-cors',
+							body: data,
+						}).then((response) => {
+							response.json().then((body) => {
+								var mData = JSON.parse(body.meta);
+								const title = ["Make", "Model", "DateTimeOriginal", "FocalLength", "ISOSpeedRatings"];
+								var table = document.getElementById("metaData");
+								var metaDataRows = ""
+								title.forEach(element => {
+									metaDataRows = metaDataRows + "<tr><td>" + element + "</td><td>" + mData[element] + "</td></tr>"
+								});
+								table.innerHTML = metaDataRows;
+								console.log(metaDataRows);
+							});
+						});
+						// if(type=="j2k" || type=="wdp"){
+						// 	document.getElementById("img").setAttribute("src", "img-def.png");	
+						// }
+						// else{
+							document.getElementById("img").setAttribute("src", filename + "." + type);
+						// }
+						document.getElementById("img_title").innerHTML = "CONVERTED IMAGE : " + filename + "." + type;
+						download = 1
+					}
+				});
+				f = 0
+			}
 		}
+		
 	}
 	const getImg = (ev) => {
 		ev.preventDefault();
