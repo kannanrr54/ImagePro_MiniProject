@@ -27,12 +27,12 @@ function app(props) {
 		if(img || link){
 			if (link) {
 				url = document.getElementById('link').value;
-				filename = url.split("/")[url.split("/").length - 1].split('.')[0	];
+				filename = url.split("/")[url.split("/").length - 1].split('.')[0];
 				data.append('url',url);
 			} else if(f){
 				filename = document.getElementById('images').value.split(/[.]/)[0].split('\\');
 				filename = filename[filename.length - 1]
-					data.append('url',"");	
+				data.append('url',"");	
 			}
 			data.delete('filename', filename);
 			data.append('filename', filename);
@@ -45,17 +45,17 @@ function app(props) {
 			  else if(document.getElementById('type3').checked){
 				type = document.getElementById('type3').value;
 			}
+			
 			if (f != 0 || document.getElementById('images').value && type!=null) {
 				document.getElementById("overlay").style.display = "block";
 				document.getElementById("img").setAttribute("src", 'loading.gif');
-				console.log(data)
 				data.append('type', type)
 				fetch('/upload', {
 					method: 'POST',
 					mode: 'no-cors',
 					body: data,
 				}).then((response) => {
-					
+					console.log("----------------------------------")
 					response.json().then((body) => {});
 					if (response.status == 200) {
 						fetch('/getMetadata', {
@@ -72,9 +72,12 @@ function app(props) {
 									metaDataRows = metaDataRows + "<tr><td>" + element + "</td><td>" + mData[element] + "</td></tr>"
 								});
 								table.innerHTML = metaDataRows;
-								console.log(metaDataRows);
 							});
 						});
+						if(filename.includes('*') || filename.includes('/') || filename.includes('\\') || filename.includes('?')){
+							filename='trial';
+							console.log(filename)
+						}
 						document.getElementById("overlay").style.display = "none";
 						document.getElementById("img").setAttribute("src", filename + "." + type);
 						document.getElementById("img_title").innerHTML = "CONVERTED IMAGE : " + filename + "." + type;

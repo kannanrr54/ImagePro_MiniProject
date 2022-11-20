@@ -24,21 +24,26 @@ def fileUpload():
     if not os.path.isdir(target):
         os.mkdir(target)
     fname=request.form['filename']
+    if('?' in  fname or '*' in  fname or '/' in  fname):
+        fname='trial'
+        print("==================================")
     type = request.form['type']
     if(request.form['url']!=""):
+        print("==================================")
         url = request.form['url']
         response = requests.get(url)
         img = Image.open(BytesIO(response.content))
     else:
+        print("==================================")
         file = request.files['file']
         img = Image.open(file)
-
-    #---------- JPEG-2000 Conversion -------------------------
+    
+    #---------- JPEG-2000 & WEBP Conversion -------------------------
     if(type!='wdp'):
+        print("=================================="+fname+"."+type)
         destination="/".join([target, fname+"."+type])
-        img.save(destination)
-        
-    #---------- JPEG-2000 Conversion -------------------------    
+        print("=================================="+fname+"."+type)
+        img.save(destination) 
     else:
         destination="/".join([target, fname+".webp"])
         img.save(destination)
@@ -56,7 +61,6 @@ def fileUpload():
         save_path = '../public/'
         completeName = os.path.join(save_path, fname+".wdp")   
         file1 = open(completeName, "wb")
-        print("-------------------------"+completeName)
         file1.write(r.read())
         file1.close()
         # delete Image cloudinary
@@ -74,13 +78,9 @@ def getMeta():
     fname=request.form['filename']
     type = request.form['type']
     img = Image.open(file)
-    # destination="/".join([target, fname+".jpg"])
-    # rgb_im = img.convert('RGB')
-    # rgb_im.save(destination)
     meta="{"    
     a=0
     z=0
-    # img = Image.open(destination)
     exif = { TAGS[k]: v for k, v in img._getexif().items() if k in TAGS }
     for i in exif:
         a=a+1
@@ -92,5 +92,4 @@ def getMeta():
             meta=meta+'"'+str(i)+'":"'+str(exif.get(i))+'"'
     meta=meta+"}"
     meta=meta.replace("\\","")
-
     return {"meta":meta}
