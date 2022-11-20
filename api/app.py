@@ -29,13 +29,16 @@ def fileUpload():
         url = request.form['url']
         response = requests.get(url)
         img = Image.open(BytesIO(response.content))
-
     else:
         file = request.files['file']
         img = Image.open(file)
+
+    #---------- JPEG-2000 Conversion -------------------------
     if(type!='wdp'):
         destination="/".join([target, fname+"."+type])
         img.save(destination)
+        
+    #---------- JPEG-2000 Conversion -------------------------    
     else:
         destination="/".join([target, fname+".webp"])
         img.save(destination)
