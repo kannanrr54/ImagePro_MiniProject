@@ -20,29 +20,25 @@ destination=""
 
 @app.route('/upload', methods=['POST'])
 def fileUpload():
+    
     target=os.path.join(UPLOAD_FOLDER,path)
     if not os.path.isdir(target):
         os.mkdir(target)
     fname=request.form['filename']
     if('?' in  fname or '*' in  fname or '/' in  fname):
         fname='trial'
-        print("==================================")
     type = request.form['type']
     if(request.form['url']!=""):
-        print("==================================")
         url = request.form['url']
         response = requests.get(url)
         img = Image.open(BytesIO(response.content))
     else:
-        print("==================================")
         file = request.files['file']
         img = Image.open(file)
     
     #---------- JPEG-2000 & WEBP Conversion -------------------------
     if(type!='wdp'):
-        print("=================================="+fname+"."+type)
         destination="/".join([target, fname+"."+type])
-        print("=================================="+fname+"."+type)
         img.save(destination) 
     else:
         destination="/".join([target, fname+".webp"])

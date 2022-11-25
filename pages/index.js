@@ -48,7 +48,7 @@ function app(props) {
 			
 			if (f != 0 || document.getElementById('images').value && type!=null) {
 				document.getElementById("overlay").style.display = "block";
-				document.getElementById("img").setAttribute("src", 'loading.gif');
+				document.getElementById("img").setAttribute("src", 'load.gif');
 				data.append('type', type)
 				fetch('/upload', {
 					method: 'POST',
@@ -79,6 +79,14 @@ function app(props) {
 							console.log(filename)
 						}
 						document.getElementById("overlay").style.display = "none";
+						if(type=='wdp' || type == 'j2k'){
+							document.getElementById("img").style.display='none';
+							document.getElementById("img2").style.display='block';
+						}
+						else{
+							document.getElementById("img").style.display='block';
+							document.getElementById("img2").style.display='none';
+						}
 						document.getElementById("img").setAttribute("src", filename + "." + type);
 						document.getElementById("img_title").innerHTML = "CONVERTED IMAGE : " + filename + "." + type;
 						document.getElementById("bottom2").style.display='block';
@@ -164,7 +172,7 @@ function app(props) {
 			<div className='col-4' id="pt11">
 				<div id='img_title'>QUICK VIEW : </div>
 				<picture><img id="img" className='img' src="img-def.png"/></picture>
-				
+				<picture><img id="img2" className='img2' src="img-def.png"/></picture>
 			</div>
 			<div className='col-6' id="a">
 				<h2>METADATA</h2>

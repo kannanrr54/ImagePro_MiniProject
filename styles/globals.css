@@ -230,3 +230,10 @@ body{
     border-radius: 5px;
     border: 2px dashed black;
   }
+  .img2{
+    display: none;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 2px dashed black;
+    background-image: url('../public/img-def.png');
+  }
