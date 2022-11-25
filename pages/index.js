@@ -36,6 +36,7 @@ function app(props) {
 			}
 			data.delete('filename', filename);
 			data.append('filename', filename);
+			console.log(type)
 			if (document.getElementById('type1').checked) {
 				type = document.getElementById('type1').value;
 			  }
@@ -45,17 +46,19 @@ function app(props) {
 			  else if(document.getElementById('type3').checked){
 				type = document.getElementById('type3').value;
 			}
-			
-			if (f != 0 || document.getElementById('images').value && type!=null) {
+			console.log(type)
+			if ((f != 0 || document.getElementById('images').value) && type!=null) {
+				
 				document.getElementById("overlay").style.display = "block";
 				document.getElementById("img").setAttribute("src", 'load.gif');
+				data.delete('type',type)
 				data.append('type', type)
+				console.log(type)
 				fetch('/upload', {
 					method: 'POST',
 					mode: 'no-cors',
 					body: data,
 				}).then((response) => {
-					console.log("----------------------------------")
 					response.json().then((body) => {});
 					if (response.status == 200) {
 						fetch('/getMetadata', {

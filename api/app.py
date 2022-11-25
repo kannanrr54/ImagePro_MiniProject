@@ -20,13 +20,13 @@ destination=""
 
 @app.route('/upload', methods=['POST'])
 def fileUpload():
-    
     target=os.path.join(UPLOAD_FOLDER,path)
     if not os.path.isdir(target):
         os.mkdir(target)
     fname=request.form['filename']
     if('?' in  fname or '*' in  fname or '/' in  fname):
         fname='trial'
+    print(request.form)
     type = request.form['type']
     if(request.form['url']!=""):
         url = request.form['url']
@@ -39,7 +39,7 @@ def fileUpload():
     #---------- JPEG-2000 & WEBP Conversion -------------------------
     if(type!='wdp'):
         destination="/".join([target, fname+"."+type])
-        img.save(destination) 
+        img.save(destination)
     else:
         destination="/".join([target, fname+".webp"])
         img.save(destination)
@@ -59,8 +59,6 @@ def fileUpload():
         file1 = open(completeName, "wb")
         file1.write(r.read())
         file1.close()
-        # delete Image cloudinary
-        # cloudinary.uploader.destroy('zombie', function(result) { console.log(result) });
     return  {}
 
 @app.route('/getimage')
